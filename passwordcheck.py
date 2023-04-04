@@ -1,6 +1,7 @@
 import requests
 import hashlib
 import sys
+import getpass
 
 def request_api_data(query_char):
     """
@@ -66,14 +67,15 @@ def pwned_api_check(password):
     response = request_api_data(first5_char)
     return get_password_leaks_count(response, tail)
 
-def main(args):
-    for password in args:
-        count = pwned_api_check(password)
-        if count:
-            print(f'{password} was found {count} times... you should probably change your password!')
-        else:
-            print(f'{password} was NOT found.')
+def main():
+    password = getpass.getpass("Enter the password to check: ")
+    count = pwned_api_check(password)
+    if count:
+        print(f'The password was found {count} times... you should probably change your password!')
+    else:
+        print(f'The password was NOT found.')
     return 'done!'
 
+
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main())
