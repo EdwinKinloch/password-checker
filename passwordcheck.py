@@ -68,6 +68,17 @@ def pwned_api_check(password):
     return get_password_leaks_count(response, tail)
 
 def main():
+    """
+    Check if the given password has been leaked using the Pwned Passwords API.
+
+    The function prompts the user to securely enter a password and checks if
+    it has been leaked using the Pwned Passwords API. If the password is found
+    in the database, it displays the number of times it has been leaked;
+    otherwise, it informs the user that the password was not found.
+
+    Returns:
+        str: A message indicating the completion of the process.
+    """
     password = getpass.getpass("Enter the password to check: ")
     count = pwned_api_check(password)
     if count:
