@@ -25,6 +25,22 @@ def request_api_data(query_char):
     return responds
 
 def get_password_leaks_count(hashes, hash_to_check):
+    """
+    Count the number of times a password hash appears in the provided hashes.
+
+    This function takes a response from the Pwned Passwords API containing hashes
+    and their corresponding leak counts, and checks if the given hash is present
+    in the response. If found, it returns the count of leaks for that hash;
+    otherwise, it returns 0.
+
+    Args:
+        hashes (Response): A requests.Response object containing the API response
+                           with hashes and their leak counts.
+        hash_to_check (str): The hash of the password to check for leaks.
+
+    Returns:
+        int: The number of times the password hash has been leaked.
+    """
     hashes = (line.split(':') for line in hashes.text.splitlines())
     for h, count in hashes:
         if h == hash_to_check:
