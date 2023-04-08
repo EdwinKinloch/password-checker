@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Edwin's Password Checker</title>
+</head>
+
+<body>
+    <header>
+        <h1>Edwin's Password Checker</h1>
+    </header>
+    <main>
+        <form id="password-checker-form">
+            <label for="password">Enter your password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Check Password</button>
+        </form>
+        <div id="result"></div>
+    </main>
+
+    <!--This JavaScript code listens for the form's submit event, prevents the default behavior (i.e., page reload), and sends an AJAX request to the /check_password endpoint using Axios.
+        After receiving the response, it updates the content of the result div with the password check result.-->
+    <script>
+        const form = document.getElementById("password-checker-form");
+        const resultDiv = document.getElementById("result");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const password = event.target.password.value;
+            try {
+                const response = await axios.post('/check_password', new URLSearchParams({password}));
+                const count = response.data.count;
+                if (count) {
+                    resultDiv.innerHTML = `The password was found ${count} times... you should probably change your password!`;
+                } else {
+                    resultDiv.innerHTML = 'The password was NOT found.';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = 'An error occurred while checking the password. Please try again.';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
